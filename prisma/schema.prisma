@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum WinLossOrDraw {
+  WIN
+  LOSS
+  DRAW
+}
+
+enum entryTimeFrame {
+  MIN1
+  MIN5
+  MIN15
+}
+
+enum Region {
+  FOREX
+  IND
+}
+
+model User {
+  id       Int     @id @unique @default(autoincrement())
+  username String  @unique
+  password String
+  name     String
+  trade    Trade[]
+}
+
+model Trade {
+  id             Int            @id @unique @default(autoincrement())
+  contract       String
+  date           DateTime       @default(now())
+  entryTimeFrame entryTimeFrame
+  entryReason    String
+  exitReason     String
+  description    String
+  pnl            Int
+  winlossdraw    WinLossOrDraw
+  brokerage      Int            @default(0)
+  region         Region         @default(IND)
+  User           User?          @relation(fields: [userId], references: [id])
+  image          String         @default("")
+  userId         Int?
+}
