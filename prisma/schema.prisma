@@ -45,6 +45,5 @@ model Trade {
   brokerage      Int            @default(0)
   region         Region         @default(IND)
   User           User?          @relation(fields: [userId], references: [id])
-  image          String         @default("")
   userId         Int?
 }
